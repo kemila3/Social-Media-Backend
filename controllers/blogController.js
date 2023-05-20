@@ -37,7 +37,7 @@ export const updateBlog = async (req, res, next) => {
   const blogId = req.params.id;
   let blog;
   try {
-    const blog = await Blog.findByIdAndUpdate(blogId, {
+    blog = await Blog.findByIdAndUpdate(blogId, {
       title,
       description,
     });
@@ -46,6 +46,21 @@ export const updateBlog = async (req, res, next) => {
   }
   if (!blog) {
     return res.status(500).json({ message: "Unable to update the blog" });
+  }
+  return res.status(200).json({ blog });
+};
+
+// GET method to get a blog
+export const getBlog = async (req, res, next) => {
+  const id = req.params.id;
+  let blog;
+  try {
+    blog = await Blog.findById(id);
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!blog) {
+    return res.status(404).json({ message: "Unable to find the blog by id" });
   }
   return res.status(200).json({ blog });
 };
