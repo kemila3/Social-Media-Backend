@@ -64,3 +64,18 @@ export const getBlog = async (req, res, next) => {
   }
   return res.status(200).json({ blog });
 };
+
+//DELETE method to delete a blog
+export const deleteBlog = async (req, res, next) => {
+  const id = req.params.id;
+  let blog;
+  try {
+    blog = await Blog.findByIdAndRemove(id);
+  } catch (err) {
+    return console.log(err);
+  }
+  if (!blog) {
+    res.status(500).json({ message: "Blog not found to be deleted" });
+  }
+  res.status(200).json({ message: "Sucessfully Deleted" });
+};
